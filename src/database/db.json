@@ -1,7 +1,26 @@
 [
   {
     "id": 1,
+    "name": "iPhone 15 Pro",
+    "price": 1199,
+    "description": "Premium Apple smartphone with A17 Pro chip, advanced camera system, and titanium design."
+  },
+  {
+    "id": 2,
+    "name": "Sony WH-1000XM5",
+    "price": 399,
+    "description": "Wireless noise-cancelling headphones with crystal clear sound and long battery life."
+  },
+  {
+    "id": 3,
+    "name": "Dell XPS 15",
+    "price": 1899,
+    "description": "High-performance laptop with Intel Core i7 processor, OLED display, and sleek aluminum body."
+  },
+  {
+    "id": 1778510242058,
     "name": "Mobile",
-    "price": 500
+    "price": 2000,
+    "description": "product description"
   }
 ]
