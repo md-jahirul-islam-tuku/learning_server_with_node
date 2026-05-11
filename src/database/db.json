@@ -7,20 +7,14 @@
   },
   {
     "id": 2,
-    "name": "Sony WH-1000XM5",
-    "price": 399,
-    "description": "Wireless noise-cancelling headphones with crystal clear sound and long battery life."
+    "name": "iphone 15 pro",
+    "price": 4640,
+    "description": "product description for iphone 15 pro"
   },
   {
     "id": 3,
     "name": "Dell XPS 15",
     "price": 1899,
     "description": "High-performance laptop with Intel Core i7 processor, OLED display, and sleek aluminum body."
-  },
-  {
-    "id": 1778510242058,
-    "name": "Mobile",
-    "price": 1544,
-    "description": "product description"
   }
 ]

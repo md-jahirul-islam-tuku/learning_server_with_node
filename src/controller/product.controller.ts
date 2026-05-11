@@ -13,7 +13,7 @@ export const productController = async (
   const id =
     urlParts && urlParts[1] === "products" ? Number(urlParts[2]) : null;
 
-  if (url === "/products" && method === "GET") {
+  if (method === "GET" && url === "/products") {
     const products = readProduct();
     res.writeHead(200, { "content-type": "application/json" });
     res.end(
@@ -22,6 +22,16 @@ export const productController = async (
   } else if (method === "GET" && id !== null) {
     const products = readProduct();
     const product = products.find((p: IProduct) => p.id === id);
+    if (!product) {
+      res.writeHead(404, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Product not found",
+          data: null,
+        }),
+      );
+      return;
+    }
     res.writeHead(200, { "content-type": "application/json" });
     res.end(
       JSON.stringify({
@@ -45,7 +55,7 @@ export const productController = async (
         message: "Product created successfully",
       }),
     );
-  } else if (method === "PUT" && url !== null) {
+  } else if (method === "PUT" && id !== null) {
     const body = await parseBody(req);
 
     const products = readProduct();
@@ -58,6 +68,7 @@ export const productController = async (
           data: null,
         }),
       );
+      return;
     }
     products[index] = { id: products[index].id, ...body };
     console.log(products);
@@ -66,6 +77,31 @@ export const productController = async (
     res.end(
       JSON.stringify({
         message: "Product updated successfully",
+        data: products[index],
+      }),
+    );
+  } else if (method === "DELETE" && id !== null) {
+    const body = await parseBody(req);
+
+    const products = readProduct();
+    const index = products.findIndex((p: IProduct) => p.id === id);
+    if (index < 0) {
+      res.writeHead(404, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Product not found",
+          data: null,
+        }),
+      );
+      return;
+    }
+    products.splice(index, 1);
+    console.log(products);
+    insertProduct(products);
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(
+      JSON.stringify({
+        message: "Product deleted successfully",
         data: products[index],
       }),
     );
