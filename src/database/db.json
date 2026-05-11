@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "name": "iPhone 15 Pro",
-    "price": 1199,
-    "description": "Premium Apple smartphone with A17 Pro chip, advanced camera system, and titanium design."
+    "name": "iphone 17 pro",
+    "price": 5650,
+    "description": "product description for iphone"
   },
   {
     "id": 2,
@@ -20,7 +20,7 @@
   {
     "id": 1778510242058,
     "name": "Mobile",
-    "price": 2000,
+    "price": 1544,
     "description": "product description"
   }
 ]
