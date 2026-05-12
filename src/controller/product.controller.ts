@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { insertProduct, readProduct } from "../service/product.service";
 import type { IProduct } from "../types/product.type";
 import { parseBody } from "../utility/parseBody";
+import { sendResponse } from "../utility/sendResponse";
 
 export const productController = async (
   req: IncomingMessage,
@@ -15,29 +16,19 @@ export const productController = async (
 
   if (method === "GET" && url === "/products") {
     const products = readProduct();
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(
-      JSON.stringify({ message: "This is products route", data: products }),
-    );
+    return sendResponse(res, 200, true, "This is products route", products);
   } else if (method === "GET" && id !== null) {
     const products = readProduct();
     const product = products.find((p: IProduct) => p.id === id);
     if (!product) {
-      res.writeHead(404, { "content-type": "application/json" });
-      res.end(
-        JSON.stringify({
-          message: "Product not found",
-          data: null,
-        }),
-      );
-      return;
+      return sendResponse(res, 404, false, "Product not found", null);
     }
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(
-      JSON.stringify({
-        message: "This is single product route",
-        data: product,
-      }),
+    return sendResponse(
+      res,
+      200,
+      true,
+      "This is single product route",
+      product,
     );
   } else if (method === "POST" && url === "/products") {
     const body = await parseBody(req);
@@ -49,11 +40,13 @@ export const productController = async (
     products.push(newProduct);
     console.log(products);
     insertProduct(products);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(
-      JSON.stringify({
-        message: "Product created successfully",
-      }),
+
+    return sendResponse(
+      res,
+      200,
+      true,
+      "This is single product route",
+      products,
     );
   } else if (method === "PUT" && id !== null) {
     const body = await parseBody(req);
@@ -61,52 +54,35 @@ export const productController = async (
     const products = readProduct();
     const index = products.findIndex((p: IProduct) => p.id === id);
     if (index < 0) {
-      res.writeHead(404, { "content-type": "application/json" });
-      res.end(
-        JSON.stringify({
-          message: "Product not found",
-          data: null,
-        }),
-      );
-      return;
+      return sendResponse(res, 404, false, "Product not found", null);
     }
     products[index] = { id: products[index].id, ...body };
     console.log(products);
     insertProduct(products);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(
-      JSON.stringify({
-        message: "Product updated successfully",
-        data: products[index],
-      }),
+    return sendResponse(
+      res,
+      200,
+      true,
+      "Product updated successfully",
+      products[index],
     );
   } else if (method === "DELETE" && id !== null) {
-    const body = await parseBody(req);
-
     const products = readProduct();
     const index = products.findIndex((p: IProduct) => p.id === id);
     if (index < 0) {
-      res.writeHead(404, { "content-type": "application/json" });
-      res.end(
-        JSON.stringify({
-          message: "Product not found",
-          data: null,
-        }),
-      );
-      return;
+      return sendResponse(res, 404, false, "Product not found", null);
     }
     products.splice(index, 1);
     console.log(products);
     insertProduct(products);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(
-      JSON.stringify({
-        message: "Product deleted successfully",
-        data: products[index],
-      }),
+    return sendResponse(
+      res,
+      200,
+      true,
+      "Product deleted successfully",
+      products[index],
     );
   } else {
-    res.writeHead(404, { "content-type": "application/json" });
-    res.end(JSON.stringify({ message: "Not found" }));
+    return sendResponse(res, 404, false, "Product not found", null);
   }
 };
